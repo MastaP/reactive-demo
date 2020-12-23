@@ -1,0 +1,9 @@
+server:
+  port : 8080
+spring:
+  codec:
+    max-in-memory-size: -1
+  rsocket:
+    server:
+      transport: WEBSOCKET
+      mapping-path: "/rs"
