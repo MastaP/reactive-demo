@@ -7,3 +7,6 @@ spring:
     server:
       transport: WEBSOCKET
       mapping-path: "/rs"
+#logging:
+#  level:
+#    io.rsocket.FrameLogger: DEBUG
