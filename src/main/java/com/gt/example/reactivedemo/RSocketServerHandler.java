@@ -4,6 +4,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 
@@ -11,6 +12,13 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Controller
 public class RSocketServerHandler {
+
+    @MessageMapping("receive-stream")
+    Mono<Void> rsocketReceiveStream(Flux<String> data) {
+        return data
+                .doOnNext(s -> System.out.println("receive-stream: " + s))
+                .then();
+    }
 
     @MessageMapping("request-stream")
     Flux<String> rsocketStream() {
