@@ -1,5 +1,5 @@
 plugins {
-    id("org.springframework.boot") version "2.4.1"
+    id("org.springframework.boot") version "2.4.2"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("java")
 }
@@ -13,6 +13,13 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+//        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+//        mavenBom("org.springframework:spring-framework-bom:5.3.3")
+    }
 }
 
 dependencies {
