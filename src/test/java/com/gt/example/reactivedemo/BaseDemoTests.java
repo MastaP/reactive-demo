@@ -9,10 +9,41 @@ import reactor.test.StepVerifier;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public abstract class BaseDemoTests {
 
     RSocketRequester requester;
+
+    @Test
+    void testRequestResponseWithLongRouteVarValues() {
+        System.out.println("--- testRequestResponseWithLongRouteVarValues");
+
+        // passing example:
+        var first = "f";
+        var second = "s";
+        Mono<Void> result = requester
+                .route("request-response.{first}.{second}", first, second)
+                .data(Mono.just("test"))
+                .retrieveMono(Void.class);
+        StepVerifier
+                .create(result)
+                .verifyComplete();
+
+        // failing example:
+        first = UUID.randomUUID().toString();
+        second = IntStream.range(0, 10).mapToObj(i -> UUID.randomUUID().toString()).collect(Collectors.joining(","));
+
+        result = requester
+                .route("request-response.{first}.{second}", first, second)
+                .data(Mono.just("test"))
+                .retrieveMono(Void.class);
+        StepVerifier
+                .create(result)
+                .verifyComplete();
+    }
 
     @Test
     void testSendStreamGetFluxFromMono() {

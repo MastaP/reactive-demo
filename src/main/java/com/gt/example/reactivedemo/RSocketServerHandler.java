@@ -13,6 +13,17 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Controller
 public class RSocketServerHandler {
 
+    @MessageMapping("request-response.{first}.{second}")
+    Mono<Void> rsocketRequestResponse(
+            @DestinationVariable String first,
+            @DestinationVariable String second,
+            Mono<String> data) {
+        System.out.println("request-response metadata: first = " + first + ", second = " + second);
+        return data
+                .doOnNext(s -> System.out.println("request-response: " + s))
+                .then();
+    }
+
     @MessageMapping("receive-stream")
     Mono<Void> rsocketReceiveStream(Flux<String> data) {
         return data
